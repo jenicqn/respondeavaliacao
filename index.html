@@ -637,8 +637,8 @@ Avaliação do cliente: "${review}"
 Responda apenas com o texto da resposta, sem introduções ou explicações.`;
 
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
+  const res = await fetch("/api/responder", {
+    method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           model: "claude-sonnet-4-20250514",
