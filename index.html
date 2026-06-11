@@ -637,11 +637,29 @@ Avaliação do cliente: "${review}"
 Responda apenas com o texto da resposta, sem introduções ou explicações.`;
 
     try {
-const res = await fetch("/api/responder", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ prompt })
-});
+  const res = await fetch("/api/responder", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ prompt })
+  });
+
+  const data = await res.json();
+  const text = data.text || 'Não foi possível gerar a resposta. Tente novamente.';
+
+  const textEl = document.createElement('p');
+  textEl.className = 'result-text';
+  textEl.textContent = text;
+  document.getElementById('resultBody').innerHTML = '';
+  document.getElementById('resultBody').appendChild(textEl);
+  document.getElementById('copyBtn').style.display = 'flex';
+
+  history.unshift({ platform, rating, review: review.slice(0, 60) + (review.length > 60 ? '…' : ''), response: text, clientName });
+  if (history.length > 5) history.pop();
+  renderHistory();
+
+} catch (e) {
+  document.getElementById('resultBody').innerHTML = '<p class="result-text" style="color:#D45A1F">Erro ao conectar com a API. Verifique sua conexão e tente novamente.</p>';
+}
 
       const data = await res.json();
       const text = data.content?.map(b => b.text || '').join('') || 'Não foi possível gerar a resposta. Tente novamente.';
