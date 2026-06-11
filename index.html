@@ -637,15 +637,11 @@ Avaliação do cliente: "${review}"
 Responda apenas com o texto da resposta, sem introduções ou explicações.`;
 
     try {
-  const res = await fetch("/api/responder", {
-    method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
-          messages: [{ role: "user", content: prompt }]
-        })
-      });
+const res = await fetch("/api/responder", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ prompt })
+});
 
       const data = await res.json();
       const text = data.content?.map(b => b.text || '').join('') || 'Não foi possível gerar a resposta. Tente novamente.';
