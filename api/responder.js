@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
-    const text = data.choices?.[0]?.message?.content || 'Não foi possível gerar a resposta.';
+    const text = data.choices?.[0]?.message?.content || 'ERRO_DEBUG: ' + JSON.stringify(data);
     res.status(200).json({ text });
 
   } catch (e) {
