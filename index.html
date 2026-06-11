@@ -610,23 +610,27 @@
     document.getElementById('resultBody').appendChild(loadingEl);
 
     const prompt = `Você é o responsável pelas respostas do Smash do Cabo Hamburgueria, em Arraial do Cabo.
-Responda a seguinte avaliação de forma alegre, acolhedora, humanizada, profissional, sem exageros, com linguagem simples e próxima. Mantenha o estilo de uma hamburgueria premium de praia.
+Responda a avaliação abaixo de forma alegre, acolhedora, humanizada e profissional. Mantenha o estilo de uma hamburgueria premium de praia.
 
 Regras OBRIGATÓRIAS:
-1. Máximo de 2 frases curtas no corpo da resposta. Seja direto e natural.
-2. Personalize de acordo com o comentário, sem repetir as palavras exatas do cliente.
-3. Em avaliações negativas: empatia, desculpas e abertura para melhorar. Sem discussão.
-4. Nunca use travessão ( — ) nem hífen como pausa no meio de frase.
-5. Use no máximo 1 emoji, somente se fizer sentido natural. Pode omitir.
-6. Sem frases exageradas ou genéricas.
-7. ${clientName ? 'Inicie chamando o cliente pelo nome: ' + clientName + '.' : 'Não use nome.'}
-8. Pule uma linha e assine: Equipe Smash do Cabo
+1. Detecte o idioma da avaliação e responda SEMPRE no mesmo idioma do cliente.
+2. Máximo de 2 frases curtas no corpo da resposta. Seja direto e natural.
+3. NUNCA repita as palavras ou frases usadas pelo cliente. Reinterprete o elogio ou crítica com suas próprias palavras.
+4. Use 2 emojis que combine com o sentimento da mensagem. Pode ser no meio ou no fim da frase.
+5. Em avaliações negativas: empatia, desculpas e abertura para melhorar. Sem discussão.
+6. Nunca use travessão ( — ) nem hífen como pausa no meio de frase.
+7. Sem frases exageradas ou genéricas.
+8. ${clientName ? 'Inicie chamando o cliente pelo nome: ' + clientName + '.' : 'Não use nome.'}
 
-Exemplo de formato ideal:
-"Que alegria receber esse retorno! Saber que o hambúrguer chegou do jeitinho certo e que a entrega superou as expectativas é exatamente o que nos move 🍔
-Obrigado pela confiança e até a próxima!
+Exemplos de formato ideal:
+Português: "Que alegria receber esse carinho! Cada detalhe do seu pedido é feito com muito cuidado e amor 🍔
+Obrigado pela confiança e até a próxima!"
 
-Equipe Smash do Cabo"
+Inglês: "We're so glad you enjoyed your experience! Knowing every bite hit the spot makes our day 😄
+Thanks for the kind words, see you soon!"
+
+Espanhol: "Nos alegra mucho que hayas disfrutado tu pedido! Cada detalle está hecho con cariño para que vuelvas siempre 🌊
+¡Gracias por tu confianza y hasta pronto!"
 
 Plataforma: ${platform}
 Nota: ${rating} estrelas
