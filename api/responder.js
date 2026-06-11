@@ -13,7 +13,7 @@ export default async function handler(req, res) {
         'X-Title': 'Smash do Cabo'
       },
       body: JSON.stringify({
-        model: 'meta-llama/llama-3.3-70b-instruct:free',
+        model: 'google/gemma-3-4b-it:free',
         messages: [{ role: 'user', content: prompt }]
       })
     });
