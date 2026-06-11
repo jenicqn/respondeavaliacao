@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smash do Cabo — Responder Avaliações</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --areia: #F5F0E8;
+      --areia-escura: #E8E0D0;
+      --branco: #FAF8F4;
+      --carvao: #1C1A17;
+      --carvao-medio: #3A3630;
+      --carvao-leve: #6B6560;
+      --brasa: #D45A1F;
+      --brasa-escuro: #A8431A;
+      --brasa-claro: #FAEADE;
+      --borda: rgba(28,26,23,0.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--areia);
+      color: var(--carvao);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--carvao);
+      padding: 0 2rem;
+      border-bottom: 3px solid var(--brasa);
+    }
+
+    .header-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: baseline;
+      gap: 0;
+    }
+
+    .logo-main {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      color: var(--branco);
+      letter-spacing: -0.02em;
+    }
+
+    .logo-dot {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      color: var(--brasa);
+    }
+
+    .logo-sub {
+      font-size: 12px;
+      color: rgba(250,248,244,0.45);
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-left: 12px;
+      padding-left: 12px;
+      border-left: 1px solid rgba(250,248,244,0.15);
+      line-height: 1;
+      align-self: center;
+    }
+
+    .header-badge {
+      font-size: 12px;
+      color: rgba(250,248,244,0.5);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 0 3px rgba(74,222,128,0.2);
+    }
+
+    /* ── Main ── */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+    }
+
+    .page-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 28px;
+      color: var(--carvao);
+      letter-spacing: -0.03em;
+      margin-bottom: 4px;
+    }
+
+    .page-sub {
+      font-size: 14px;
+      color: var(--carvao-leve);
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── Grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 720px) {
+      .grid { grid-template-columns: 1fr; }
+      main { padding: 2rem 1.25rem 3rem; }
+      .page-title { font-size: 22px; }
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--branco);
+      border: 1px solid var(--borda);
+      border-radius: 16px;
+      padding: 1.75rem;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--carvao-leve);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title::before {
+      content: '';
+      display: block;
+      width: 3px;
+      height: 14px;
+      background: var(--brasa);
+      border-radius: 2px;
+    }
+
+    /* ── Form fields ── */
+    .field { margin-bottom: 1.1rem; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--carvao-medio);
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--areia-escura);
+      border-radius: 10px;
+      background: var(--areia);
+      color: var(--carvao);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.18s, background 0.18s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    input[type="text"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--brasa);
+      background: var(--branco);
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6560' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 130px;
+      line-height: 1.6;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* ── Stars ── */
+    .stars-wrap { margin-bottom: 1.1rem; }
+
+    .stars {
+      display: flex;
+      gap: 4px;
+    }
+
+    .star {
+      font-size: 28px;
+      cursor: pointer;
+      color: var(--areia-escura);
+      transition: color 0.1s, transform 0.1s;
+      line-height: 1;
+      user-select: none;
+    }
+
+    .star.lit { color: #E6A817; }
+    .star:hover { transform: scale(1.15); }
+
+    .star-label {
+      font-size: 12px;
+      color: var(--carvao-leve);
+      margin-top: 5px;
+    }
+
+    /* ── Plataforma pills ── */
+    .platform-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding: 7px 16px;
+      border-radius: 999px;
+      border: 1.5px solid var(--areia-escura);
+      background: var(--areia);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--carvao-leve);
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+    }
+
+    .pill.selected {
+      background: var(--carvao);
+      border-color: var(--carvao);
+      color: var(--branco);
+    }
+
+    .pill:hover:not(.selected) {
+      border-color: var(--carvao-leve);
+      color: var(--carvao);
+    }
+
+    /* ── Botão ── */
+    .btn-generate {
+      width: 100%;
+      padding: 13px 20px;
+      background: var(--brasa);
+      color: var(--branco);
+      border: none;
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 1.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    .btn-generate:hover { background: var(--brasa-escuro); }
+    .btn-generate:active { transform: scale(0.99); }
+    .btn-generate:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    /* ── Result card ── */
+    .result-card {
+      background: var(--branco);
+      border: 1px solid var(--borda);
+      border-radius: 16px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      min-height: 320px;
+    }
+
+    .result-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .platform-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--brasa-claro);
+      color: var(--brasa-escuro);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .btn-copy {
+      padding: 7px 14px;
+      background: transparent;
+      border: 1.5px solid var(--areia-escura);
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--carvao-leve);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+
+    .btn-copy:hover {
+      border-color: var(--carvao);
+      color: var(--carvao);
+    }
+
+    .btn-copy.copied {
+      border-color: #4ade80;
+      color: #16a34a;
+    }
+
+    .result-body {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .result-text {
+      font-size: 15px;
+      color: var(--carvao);
+      line-height: 1.75;
+      white-space: pre-wrap;
+      font-style: normal;
+    }
+
+    .result-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 2rem 0;
+      gap: 12px;
+      color: var(--carvao-leve);
+    }
+
+    .result-empty-icon {
+      font-size: 40px;
+      opacity: 0.3;
+    }
+
+    .result-empty-text {
+      font-size: 14px;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .loading-dots {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--brasa);
+      animation: bounce 1.1s ease-in-out infinite;
+    }
+
+    .dot:nth-child(2) { animation-delay: 0.18s; }
+    .dot:nth-child(3) { animation-delay: 0.36s; }
+
+    @keyframes bounce {
+      0%, 80%, 100% { transform: translateY(0); opacity: 0.3; }
+      40% { transform: translateY(-6px); opacity: 1; }
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 1.5rem 2rem 2.5rem;
+      font-size: 12px;
+      color: var(--carvao-leve);
+      border-top: 1px solid var(--borda);
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* ── Histórico ── */
+    .history-section {
+      margin-top: 2.5rem;
+    }
+
+    .history-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--carvao-leve);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .history-title::before {
+      content: '';
+      display: block;
+      width: 3px;
+      height: 14px;
+      background: var(--areia-escura);
+      border-radius: 2px;
+    }
+
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .history-item {
+      background: var(--branco);
+      border: 1px solid var(--borda);
+      border-radius: 10px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .history-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .history-meta {
+      font-size: 12px;
+      color: var(--carvao-leve);
+      margin-bottom: 4px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .history-preview {
+      font-size: 13px;
+      color: var(--carvao-medio);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .history-btn {
+      padding: 5px 12px;
+      background: transparent;
+      border: 1px solid var(--areia-escura);
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--carvao-leve);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+
+    .history-btn:hover {
+      border-color: var(--brasa);
+      color: var(--brasa);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <span class="logo-main">Smash do Cabo</span>
+      <span class="logo-dot">.</span>
+      <span class="logo-sub">Arraial do Cabo</span>
+    </div>
+    <div class="header-badge">
+      <span class="status-dot"></span>
+      Respostas com IA
+    </div>
+  </div>
+</header>
+
+<main>
+  <h1 class="page-title">Responder avaliação</h1>
+  <p class="page-sub">Cole o comentário do cliente e gere uma resposta personalizada em segundos.</p>
+
+  <div class="grid">
+
+    <!-- Formulário -->
+    <div class="card">
+      <div class="card-title">Nova resposta</div>
+
+      <div class="field">
+        <label>Plataforma</label>
+        <div class="platform-pills">
+          <div class="pill selected" data-platform="iFood" onclick="selectPlatform(this)">iFood</div>
+          <div class="pill" data-platform="Google" onclick="selectPlatform(this)">Google</div>
+          <div class="pill" data-platform="TripAdvisor" onclick="selectPlatform(this)">TripAdvisor</div>
+        </div>
+      </div>
+
+      <div class="field-row" style="margin-top: 1rem;">
+        <div class="field" style="margin-bottom:0">
+          <label>Nome do cliente</label>
+          <input type="text" id="clientName" placeholder="Ex: João Silva" />
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>Nota</label>
+          <div class="stars-wrap">
+            <div class="stars" id="stars">
+              <span class="star" data-val="1">★</span>
+              <span class="star" data-val="2">★</span>
+              <span class="star" data-val="3">★</span>
+              <span class="star" data-val="4">★</span>
+              <span class="star lit" data-val="5">★</span>
+            </div>
+            <div class="star-label" id="starLabel">5 estrelas</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field" style="margin-top: 1rem;">
+        <label>Comentário do cliente</label>
+        <textarea id="review" placeholder="Cole aqui o texto da avaliação do cliente..."></textarea>
+      </div>
+
+      <button class="btn-generate" id="generateBtn" onclick="generate()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 1L9.5 6H14.5L10.5 9L12 14L8 11L4 14L5.5 9L1.5 6H6.5L8 1Z" fill="white" opacity="0.9"/>
+        </svg>
+        Gerar resposta
+      </button>
+    </div>
+
+    <!-- Resultado -->
+    <div class="result-card" id="resultCard">
+      <div class="result-top">
+        <div class="card-title" style="margin-bottom:0">Resposta gerada</div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="platform-tag" id="platformTag">iFood</span>
+          <button class="btn-copy" id="copyBtn" onclick="copyText()" style="display:none">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+              <path d="M2 10V2h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+            Copiar
+          </button>
+        </div>
+      </div>
+
+      <div class="result-body" id="resultBody">
+        <div class="result-empty" id="resultEmpty">
+          <div class="result-empty-icon">💬</div>
+          <div class="result-empty-text">Preencha o formulário ao lado<br>e clique em <strong>Gerar resposta</strong></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Histórico -->
+  <div class="history-section" id="historySection" style="display:none">
+    <div class="history-title">Histórico recente</div>
+    <div class="history-list" id="historyList"></div>
+  </div>
+
+</main>
+
+<footer>
+  Smash do Cabo Hamburgueria · Arraial do Cabo, RJ · Ferramenta interna de atendimento
+</footer>
+
+<script>
+  let rating = 5;
+  let platform = 'iFood';
+  const history = [];
+
+  // Stars
+  const stars = document.querySelectorAll('.star');
+  const starLabels = ['', '1 estrela', '2 estrelas', '3 estrelas', '4 estrelas', '5 estrelas'];
+
+  stars.forEach(s => {
+    s.addEventListener('click', () => {
+      rating = parseInt(s.dataset.val);
+      updateStars(rating);
+    });
+    s.addEventListener('mouseover', () => updateStars(parseInt(s.dataset.val)));
+    s.addEventListener('mouseout', () => updateStars(rating));
+  });
+
+  function updateStars(val) {
+    stars.forEach(st => st.classList.toggle('lit', parseInt(st.dataset.val) <= val));
+    document.getElementById('starLabel').textContent = starLabels[val];
+  }
+
+  // Platform
+  function selectPlatform(el) {
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('selected'));
+    el.classList.add('selected');
+    platform = el.dataset.platform;
+    document.getElementById('platformTag').textContent = platform;
+  }
+
+  // Generate
+  async function generate() {
+    const review = document.getElementById('review').value.trim();
+    const clientName = document.getElementById('clientName').value.trim();
+
+    if (!review) {
+      document.getElementById('review').focus();
+      document.getElementById('review').style.borderColor = '#D45A1F';
+      setTimeout(() => document.getElementById('review').style.borderColor = '', 1500);
+      return;
+    }
+
+    const btn = document.getElementById('generateBtn');
+    btn.disabled = true;
+    btn.innerHTML = `<span style="display:flex;gap:6px;align-items:center">
+      <span class="loading-dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+      Gerando...
+    </span>`;
+
+    document.getElementById('resultEmpty').style.display = 'none';
+    document.getElementById('copyBtn').style.display = 'none';
+    document.getElementById('platformTag').textContent = platform;
+
+    const loadingEl = document.createElement('div');
+    loadingEl.className = 'loading-dots';
+    loadingEl.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
+    document.getElementById('resultBody').innerHTML = '';
+    document.getElementById('resultBody').appendChild(loadingEl);
+
+    const prompt = `Você é o responsável pelas respostas do Smash do Cabo Hamburgueria, em Arraial do Cabo.
+Responda a seguinte avaliação de forma alegre, acolhedora, humanizada, profissional, sem exageros, sem excesso de emojis, com linguagem simples e próxima. Demonstre gratidão pelo feedback. Mantenha o estilo de uma hamburgueria premium de praia.
+
+Regras:
+1. Sempre agradeça a avaliação.
+2. Personalize a resposta de acordo com o comentário.
+3. Quando houver elogios específicos, mencione-os na resposta SEM repetir as palavras exatas do cliente.
+4. Em avaliações negativas, demonstre empatia, peça desculpas e mostre interesse em melhorar, sem discutir.
+5. Evite respostas genéricas.
+6. Não use frases exageradas.
+7. Use no máximo 1 emoji quando fizer sentido.
+8. Resposta curta: entre 2 e 5 frases.
+9. ${clientName ? `Inicie chamando o cliente pelo nome: ${clientName}.` : 'Não use nome, pois não foi informado.'}
+10. Assine sempre como: Equipe Smash do Cabo
+
+Plataforma: ${platform}
+Nota: ${rating} estrelas
+${clientName ? `Nome do cliente: ${clientName}.` : ''}
+Avaliação do cliente: "${review}"
+
+Responda apenas com o texto da resposta, sem introduções ou explicações.`;
+
+    try {
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 1000,
+          messages: [{ role: "user", content: prompt }]
+        })
+      });
+
+      const data = await res.json();
+      const text = data.content?.map(b => b.text || '').join('') || 'Não foi possível gerar a resposta. Tente novamente.';
+
+      const textEl = document.createElement('p');
+      textEl.className = 'result-text';
+      textEl.textContent = text;
+      document.getElementById('resultBody').innerHTML = '';
+      document.getElementById('resultBody').appendChild(textEl);
+      document.getElementById('copyBtn').style.display = 'flex';
+
+      // Histórico
+      history.unshift({ platform, rating, review: review.slice(0, 60) + (review.length > 60 ? '…' : ''), response: text, clientName });
+      if (history.length > 5) history.pop();
+      renderHistory();
+
+    } catch (e) {
+      document.getElementById('resultBody').innerHTML = '<p class="result-text" style="color:#D45A1F">Erro ao conectar com a API. Verifique sua conexão e tente novamente.</p>';
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L9.5 6H14.5L10.5 9L12 14L8 11L4 14L5.5 9L1.5 6H6.5L8 1Z" fill="white" opacity="0.9"/></svg> Gerar resposta`;
+  }
+
+  // Copy
+  function copyText() {
+    const text = document.querySelector('.result-text')?.textContent;
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copyBtn');
+      btn.classList.add('copied');
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Copiado!`;
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="4" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 10V2h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg> Copiar`;
+      }, 2000);
+    });
+  }
+
+  // History
+  function renderHistory() {
+    if (history.length === 0) return;
+    document.getElementById('historySection').style.display = 'block';
+    const list = document.getElementById('historyList');
+    const stars = ['', '★', '★★', '★★★', '★★★★', '★★★★★'];
+    list.innerHTML = history.map((h, i) => `
+      <div class="history-item">
+        <div class="history-info">
+          <div class="history-meta">
+            <span style="color:var(--brasa);font-weight:600">${h.platform}</span>
+            <span style="color:#E6A817">${stars[h.rating]}</span>
+            ${h.clientName ? `<span>${h.clientName}</span>` : ''}
+          </div>
+          <div class="history-preview">${h.review}</div>
+        </div>
+        <button class="history-btn" onclick="loadHistory(${i})">Ver resposta</button>
+      </div>
+    `).join('');
+  }
+
+  function loadHistory(i) {
+    const h = history[i];
+    const textEl = document.createElement('p');
+    textEl.className = 'result-text';
+    textEl.textContent = h.response;
+    document.getElementById('resultBody').innerHTML = '';
+    document.getElementById('resultBody').appendChild(textEl);
+    document.getElementById('copyBtn').style.display = 'flex';
+    document.getElementById('platformTag').textContent = h.platform;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Enter to submit
+  document.getElementById('review').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && e.metaKey) generate();
+  });
+</script>
+
+</body>
+</html>
