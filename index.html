@@ -203,7 +203,6 @@
     }
 
     .stars-wrap { margin-bottom: 1.1rem; }
-
     .stars { display: flex; gap: 4px; }
 
     .star {
@@ -294,7 +293,6 @@
     .platform-tag {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
       font-size: 12px;
       font-weight: 600;
       padding: 4px 10px;
@@ -598,9 +596,10 @@
 
     const btn = document.getElementById('generateBtn');
     btn.disabled = true;
-    btn.innerHTML = `<span style="display:flex;gap:6px;align-items:center"><span class="loading-dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>Gerando...</span>`;
+    btn.innerHTML = '<span style="display:flex;gap:6px;align-items:center"><span class="loading-dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>Gerando...</span>';
 
-    document.getElementById('resultEmpty').style.display = 'none';
+    const resultEmpty = document.getElementById('resultEmpty');
+    if (resultEmpty) resultEmpty.style.display = 'none';
     document.getElementById('copyBtn').style.display = 'none';
     document.getElementById('platformTag').textContent = platform;
 
@@ -620,7 +619,7 @@ Regras OBRIGATÓRIAS:
 4. Nunca use travessão ( — ) nem hífen como pausa no meio de frase.
 5. Use no máximo 1 emoji, somente se fizer sentido natural. Pode omitir.
 6. Sem frases exageradas ou genéricas.
-7. ${clientName ? `Inicie chamando o cliente pelo nome: ${clientName}.` : 'Não use nome.'}
+7. ${clientName ? 'Inicie chamando o cliente pelo nome: ' + clientName + '.' : 'Não use nome.'}
 8. Pule uma linha e assine: Equipe Smash do Cabo
 
 Exemplo de formato ideal:
@@ -631,38 +630,20 @@ Equipe Smash do Cabo"
 
 Plataforma: ${platform}
 Nota: ${rating} estrelas
-${clientName ? `Nome do cliente: ${clientName}.` : ''}
+${clientName ? 'Nome do cliente: ' + clientName + '.' : ''}
 Avaliação do cliente: "${review}"
 
 Responda apenas com o texto da resposta, sem introduções ou explicações.`;
 
     try {
-  const res = await fetch("/api/responder", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ prompt })
-  });
-
-  const data = await res.json();
-  const text = data.text || 'Não foi possível gerar a resposta. Tente novamente.';
-
-  const textEl = document.createElement('p');
-  textEl.className = 'result-text';
-  textEl.textContent = text;
-  document.getElementById('resultBody').innerHTML = '';
-  document.getElementById('resultBody').appendChild(textEl);
-  document.getElementById('copyBtn').style.display = 'flex';
-
-  history.unshift({ platform, rating, review: review.slice(0, 60) + (review.length > 60 ? '…' : ''), response: text, clientName });
-  if (history.length > 5) history.pop();
-  renderHistory();
-
-} catch (e) {
-  document.getElementById('resultBody').innerHTML = '<p class="result-text" style="color:#D45A1F">Erro ao conectar com a API. Verifique sua conexão e tente novamente.</p>';
-}
+      const res = await fetch('/api/responder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt })
+      });
 
       const data = await res.json();
-      const text = data.content?.map(b => b.text || '').join('') || 'Não foi possível gerar a resposta. Tente novamente.';
+      const text = data.text || 'Não foi possível gerar a resposta. Tente novamente.';
 
       const textEl = document.createElement('p');
       textEl.className = 'result-text';
@@ -680,19 +661,19 @@ Responda apenas com o texto da resposta, sem introduções ou explicações.`;
     }
 
     btn.disabled = false;
-    btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L9.5 6H14.5L10.5 9L12 14L8 11L4 14L5.5 9L1.5 6H6.5L8 1Z" fill="white" opacity="0.9"/></svg> Gerar resposta`;
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L9.5 6H14.5L10.5 9L12 14L8 11L4 14L5.5 9L1.5 6H6.5L8 1Z" fill="white" opacity="0.9"/></svg> Gerar resposta';
   }
 
   function copyText() {
-    const text = document.querySelector('.result-text')?.textContent;
+    const text = document.querySelector('.result-text') ? document.querySelector('.result-text').textContent : '';
     if (!text) return;
-    navigator.clipboard.writeText(text).then(() => {
+    navigator.clipboard.writeText(text).then(function() {
       const btn = document.getElementById('copyBtn');
       btn.classList.add('copied');
-      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Copiado!`;
-      setTimeout(() => {
+      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Copiado!';
+      setTimeout(function() {
         btn.classList.remove('copied');
-        btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="4" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 10V2h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg> Copiar`;
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="4" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 10V2h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg> Copiar';
       }, 2000);
     });
   }
@@ -702,19 +683,9 @@ Responda apenas com o texto da resposta, sem introduções ou explicações.`;
     document.getElementById('historySection').style.display = 'block';
     const list = document.getElementById('historyList');
     const starsMap = ['', '★', '★★', '★★★', '★★★★', '★★★★★'];
-    list.innerHTML = history.map((h, i) => `
-      <div class="history-item">
-        <div class="history-info">
-          <div class="history-meta">
-            <span style="color:var(--brasa);font-weight:600">${h.platform}</span>
-            <span style="color:#E6A817">${starsMap[h.rating]}</span>
-            ${h.clientName ? `<span>${h.clientName}</span>` : ''}
-          </div>
-          <div class="history-preview">${h.review}</div>
-        </div>
-        <button class="history-btn" onclick="loadHistory(${i})">Ver resposta</button>
-      </div>
-    `).join('');
+    list.innerHTML = history.map(function(h, i) {
+      return '<div class="history-item"><div class="history-info"><div class="history-meta"><span style="color:var(--brasa);font-weight:600">' + h.platform + '</span><span style="color:#E6A817">' + starsMap[h.rating] + '</span>' + (h.clientName ? '<span>' + h.clientName + '</span>' : '') + '</div><div class="history-preview">' + h.review + '</div></div><button class="history-btn" onclick="loadHistory(' + i + ')">Ver resposta</button></div>';
+    }).join('');
   }
 
   function loadHistory(i) {
@@ -729,7 +700,7 @@ Responda apenas com o texto da resposta, sem introduções ou explicações.`;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  document.getElementById('review').addEventListener('keydown', e => {
+  document.getElementById('review').addEventListener('keydown', function(e) {
     if (e.key === 'Enter' && e.metaKey) generate();
   });
 </script>
