@@ -4,29 +4,25 @@ export default async function handler(req, res) {
   const { prompt } = req.body;
 
   try {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }]
-        })
-      }
-    );
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        'HTTP-Referer': 'https://respondeavaliacao.smashdocabo.com',
+        'X-Title': 'Smash do Cabo'
+      },
+      body: JSON.stringify({
+        model: 'meta-llama/llama-3.1-8b-instruct:free',
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
 
     const data = await response.json();
-    console.log('Gemini response:', JSON.stringify(data));
-
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || null;
-
-    if (!text) {
-      return res.status(200).json({ text: 'ERRO_DEBUG: ' + JSON.stringify(data) });
-    }
-
+    const text = data.choices?.[0]?.message?.content || 'Não foi possível gerar a resposta.';
     res.status(200).json({ text });
 
   } catch (e) {
-    res.status(200).json({ text: 'ERRO_CATCH: ' + e.message });
+    res.status(200).json({ text: 'Erro: ' + e.message });
   }
 }
